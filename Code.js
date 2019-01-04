@@ -1,26 +1,31 @@
-function hello() {
-  Logger.log("Hello, " + mondo);
+function updateAllSheets() {
+  var label = "updateAllSheets"
+  console.log(label)
+  console.time(label);
+  var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+  for (var i = 0; i < sheets.length ; i++ ) {
+    var sheet = sheets[i];
+    var sheetLabel = label + ":" + sheet.getName();
+    console.time(sheetLabel);
+    var momentamSheet  = Sheet({name:sheet.getName()});
+    momentamSheet.update();
+    console.timeEnd(sheetLabel);
+  }
+  console.timeEnd(label);
 }
 
-function MomentamTradeUpdater() {
-  CheckFirstSheet();
-  
-}
-
-function CheckFirstSheet() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var simSheet = ss.getSheetByName('M_SLVol_simulation');
-  var response = UrlFetchApp.fetch("http://www.morningstar.co.jp/FundData/SnapShot.do?fnc=2016112105");
-  var content = response.getContentText("Shift_JIS"); 
-  var page_date = get_date(content);
-  var columnAValues = simSheet.getRange("A:A").getValues();
-  var LastRow = columnAValues.filter(String).length + 3;
-  console.log(LastRow);
-  return;
-}
-
-function get_date(content) {
-  var extract = content.match(/<span\sclass="ptdate">([\s\S]*?)<\/span>/); 
-  Logger.log(extract[1]);
-  return extract;
+function deleteLastRowAllSheets() {
+  var label = "deleteLastRowAllSheets"
+  console.log(label)
+  console.time(label);
+  var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+  for (var i = 0; i < sheets.length ; i++ ) {
+    var sheet = sheets[i];
+    var sheetLabel = label + ":" + sheet.getName();
+    console.time(sheetLabel);
+    var momentamSheet  = Sheet({name:sheet.getName()});
+    momentamSheet.deleteLastRow();
+    console.timeEnd(sheetLabel);
+  }
+  console.timeEnd(label);
 }
